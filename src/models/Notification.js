@@ -19,7 +19,7 @@ const Notification = sequelize.define('Notification', {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      isIn: [['medication_reminder', 'exercise_tip', 'seasonal_advice']]
+      isIn: [['medication_reminder', 'exercise_tip', 'seasonal_advice', 'appointment_reminder', 'profile_update', 'health_tip']]
     }
   },
   title: {

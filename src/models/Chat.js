@@ -28,7 +28,7 @@ const Chat = sequelize.define('Chat', {
     allowNull: false,
     defaultValue: 'general',
     validate: {
-      isIn: [['general', 'symptom_check', 'diet', 'myth_bust']]
+      isIn: [['general', 'symptom_check', 'medication_advice', 'diet_recommendation', 'doctor_recommendation', 'myth_busting']]
     }
   },
   metadata: {

@@ -1,4 +1,5 @@
 const { Chat, User } = require('../models');
+const { Op } = require('sequelize');
 const gptService = require('./gpt.service');
 
 class ChatService {

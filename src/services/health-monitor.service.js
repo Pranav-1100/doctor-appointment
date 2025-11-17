@@ -271,6 +271,14 @@ class HealthMonitorService {
     }));
   }
 
+  static calculateStandardDeviation(values) {
+    if (values.length === 0) return 0;
+    const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
+    const squaredDiffs = values.map(val => Math.pow(val - mean, 2));
+    const variance = squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length;
+    return Math.sqrt(variance);
+  }
+
   static async analyzeTrend(metrics) {
     // Implement trend analysis logic
     const trend = metrics.reduce((acc, curr, idx, arr) => {
@@ -286,7 +294,7 @@ class HealthMonitorService {
     return {
       direction: trend.total_change > 0 ? 'increasing' : trend.total_change < 0 ? 'decreasing' : 'stable',
       magnitude: Math.abs(trend.total_change),
-      volatility: Math.std(trend.changes) || 0
+      volatility: this.calculateStandardDeviation(trend.changes)
     };
   }
 }

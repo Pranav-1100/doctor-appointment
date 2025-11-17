@@ -1,5 +1,6 @@
-const { User, Chat, Notification } = require('../models');
+const { User, Chat, Notification, sequelize } = require('../models');
 const { Op } = require('sequelize');
+const bcrypt = require('bcrypt');
 
 class UserService {
   static async getUserProfile(userId) {

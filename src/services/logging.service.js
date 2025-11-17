@@ -1,9 +1,11 @@
 const { sequelize } = require('../models');
+const { Op } = require('sequelize');
 
 class LoggingService {
   static LOG_TYPES = {
     USER_LOGIN: 'user_login',
     USER_LOGOUT: 'user_logout',
+    USER_ACTIVITY: 'user_activity',
     PROFILE_UPDATE: 'profile_update',
     CHAT_INTERACTION: 'chat_interaction',
     HEALTH_CHECK: 'health_check',
