@@ -1,0 +1,1102 @@
+{
+  "info": {
+    "name": "HealthMate API - Complete Collection",
+    "description": "Complete API collection for HealthMate - AI-Powered Health Assistant Backend\n\nBase URL: http://localhost:3000/api\n\nAuthentication: JWT Bearer Token (get from login/register)\n\nFeatures:\n- User Authentication & Management\n- AI-Powered Health Chat (GPT-4)\n- Health Monitoring & Analytics\n- Notifications System\n- AI Doctor Search (India-focused)\n- Health Document Management (OCR)\n- Smart Medication Tracking\n- Prescription Management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"John Doe\",\n  \"age\": 30,\n  \"gender\": \"male\",\n  \"height\": 175,\n  \"weight\": 70,\n  \"location\": \"Mumbai\",\n  \"medical_conditions\": \"Diabetes\",\n  \"allergies\": \"Penicillin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new user with health profile. Returns user data and JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login with email and password. Returns JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh-token"]
+            },
+            "description": "Get a new JWT token using current valid token."
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-password"]
+            },
+            "description": "Request password reset. Returns reset token."
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset-token-from-forgot-password\",\n  \"newPassword\": \"newpassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "reset-password"]
+            },
+            "description": "Reset password using reset token."
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"password123\",\n  \"newPassword\": \"newpassword123\",\n  \"confirmPassword\": \"newpassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "change-password"]
+            },
+            "description": "Change password when logged in."
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "verify"]
+            },
+            "description": "Verify if token is valid."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. User Profile",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "profile"]
+            },
+            "description": "Get user profile (excludes password)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated\",\n  \"age\": 31,\n  \"weight\": 72,\n  \"height\": 176,\n  \"location\": \"Delhi\",\n  \"medical_conditions\": \"Diabetes, Hypertension\",\n  \"allergies\": \"Penicillin, Pollen\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "profile"]
+            },
+            "description": "Update user health profile."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Password",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"password123\",\n  \"newPassword\": \"newpassword456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/password",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "password"]
+            },
+            "description": "Update user password."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "stats"]
+            },
+            "description": "Get user statistics (chat count, notifications, etc.)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Health Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/health-summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "health-summary"]
+            },
+            "description": "Get health summary with BMI calculation."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/account",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "account"]
+            },
+            "description": "Delete user account (cascade deletes all data)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. AI Chat",
+      "item": [
+        {
+          "name": "Get Chat Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chat/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["chat", "categories"]
+            },
+            "description": "Get available chat categories."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Context",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chat/context",
+              "host": ["{{baseUrl}}"],
+              "path": ["chat", "context"]
+            },
+            "description": "Get user health context for AI chat."
+          },
+          "response": []
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"I have a headache and fever\",\n  \"category\": \"symptom_check\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chat/message",
+              "host": ["{{baseUrl}}"],
+              "path": ["chat", "message"]
+            },
+            "description": "Send message to AI and get response. Categories: general, symptom_check, medication_advice, diet_recommendation, doctor_recommendation, myth_busting."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Chat History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chat/history?page=1&limit=10&category=symptom_check",
+              "host": ["{{baseUrl}}"],
+              "path": ["chat", "history"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "10"},
+                {"key": "category", "value": "symptom_check"}
+              ]
+            },
+            "description": "Get paginated chat history with optional category filter."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Chat Thread",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chat/thread/:threadId",
+              "host": ["{{baseUrl}}"],
+              "path": ["chat", "thread", ":threadId"]
+            },
+            "description": "Get specific chat thread by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Health Monitoring",
+      "item": [
+        {
+          "name": "Get Health Trends",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/trends",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "trends"]
+            },
+            "description": "Analyze 30-day health trends from symptom checks."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Health Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/report",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "report"]
+            },
+            "description": "Generate comprehensive health report."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Recent Symptoms",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/symptoms?days=30",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "symptoms"],
+              "query": [{"key": "days", "value": "30"}]
+            },
+            "description": "Extract recent symptoms from chat history."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Health Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "metrics"]
+            },
+            "description": "Calculate health metrics (BMI, etc.)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Risk Assessment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/risk-assessment",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "risk-assessment"]
+            },
+            "description": "Identify health risk factors."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Health Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "dashboard"]
+            },
+            "description": "Get comprehensive health dashboard data."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Metric History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/trends/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "trends", "metrics"]
+            },
+            "description": "Track specific metric over time."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications?page=1&limit=10&type=medication_reminder&isRead=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "10"},
+                {"key": "type", "value": "medication_reminder"},
+                {"key": "isRead", "value": "false"}
+              ]
+            },
+            "description": "Get user notifications with filters."
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/:id/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", ":id", "read"]
+            },
+            "description": "Mark single notification as read."
+          },
+          "response": []
+        },
+        {
+          "name": "Mark All as Read",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/read-all",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "read-all"]
+            },
+            "description": "Mark all notifications as read."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", ":id"]
+            },
+            "description": "Delete notification by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Notification Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "stats"]
+            },
+            "description": "Get notification statistics."
+          },
+          "response": []
+        },
+        {
+          "name": "Schedule Health Reminders",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/schedule-reminders",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "schedule-reminders"]
+            },
+            "description": "Schedule daily health reminders."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "6. Doctor Search (NEW)",
+      "item": [
+        {
+          "name": "Search Doctors by Symptoms",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"symptoms\": \"severe headache, nausea, and dizziness\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/doctors/search-by-symptoms",
+              "host": ["{{baseUrl}}"],
+              "path": ["doctors", "search-by-symptoms"]
+            },
+            "description": "AI determines specialty and finds nearby doctors based on symptoms."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Doctors by Specialty",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specialty\": \"Cardiologist\",\n  \"location\": \"Mumbai\",\n  \"radius\": 5000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/doctors/search",
+              "host": ["{{baseUrl}}"],
+              "path": ["doctors", "search"]
+            },
+            "description": "Search for doctors by specialty and location using Google Maps."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Directions to Doctor",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userLocation\": \"Andheri, Mumbai\",\n  \"doctorLocation\": \"Bandra, Mumbai\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/doctors/directions",
+              "host": ["{{baseUrl}}"],
+              "path": ["doctors", "directions"]
+            },
+            "description": "Get directions from user location to doctor."
+          },
+          "response": []
+        },
+        {
+          "name": "Check Practo Availability",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"doctorName\": \"Dr. Amit Sharma\",\n  \"city\": \"Mumbai\",\n  \"specialty\": \"Cardiologist\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/doctors/check-practo",
+              "host": ["{{baseUrl}}"],
+              "path": ["doctors", "check-practo"]
+            },
+            "description": "Check doctor availability on Practo with AI guidance."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "7. Documents (NEW)",
+      "item": [
+        {
+          "name": "Upload Document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "document",
+                  "type": "file",
+                  "src": "/path/to/prescription.jpg"
+                },
+                {
+                  "key": "documentType",
+                  "value": "prescription",
+                  "type": "text"
+                },
+                {
+                  "key": "title",
+                  "value": "Dr. Shah Prescription",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Prescription for fever treatment",
+                  "type": "text"
+                },
+                {
+                  "key": "documentDate",
+                  "value": "2025-01-15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "upload"]
+            },
+            "description": "Upload health document (prescription, lab report, X-ray, scan). Uses GPT-4 Vision OCR for text extraction."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents?documentType=prescription&startDate=2025-01-01&tags=fever,medication",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"],
+              "query": [
+                {"key": "documentType", "value": "prescription"},
+                {"key": "startDate", "value": "2025-01-01"},
+                {"key": "tags", "value": "fever,medication"}
+              ]
+            },
+            "description": "Get all user documents with optional filters."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Document by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", ":id"]
+            },
+            "description": "Get specific document with extracted text and AI summary."
+          },
+          "response": []
+        },
+        {
+          "name": "Download Document",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/:id/download",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", ":id", "download"]
+            },
+            "description": "Download original document file."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Document",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", ":id"]
+            },
+            "description": "Delete document and associated file."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/search/:term",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "search", ":term"]
+            },
+            "description": "Search documents by text in title, description, or AI summary."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Prescription from Document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/:id/create-prescription",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", ":id", "create-prescription"]
+            },
+            "description": "Auto-create prescription from uploaded document using extracted OCR data."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "8. Medications (NEW)",
+      "item": [
+        {
+          "name": "Add Medication",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicationName\": \"Paracetamol 500mg\",\n  \"dosage\": \"1 tablet\",\n  \"frequency\": \"3 times daily\",\n  \"duration\": \"5 days\",\n  \"instructions\": \"Take after meals\",\n  \"startDate\": \"2025-01-15\",\n  \"condition\": \"Fever\",\n  \"reminderEnabled\": true,\n  \"reminderTimes\": [\"09:00\", \"14:00\", \"21:00\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/medications",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications"]
+            },
+            "description": "Add medication to user's record with optional reminders."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Medications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/medications?activeOnly=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications"],
+              "query": [{"key": "activeOnly", "value": "true"}]
+            },
+            "description": "Get all medications, optionally filter for active only."
+          },
+          "response": []
+        },
+        {
+          "name": "Get AI Medication Suggestions",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"symptoms\": \"runny nose, sneezing, sore throat\",\n  \"condition\": \"Common Cold\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/medications/suggest",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications", "suggest"]
+            },
+            "description": "Get AI-powered medication suggestions based on symptoms and history. Remembers what worked before!"
+          },
+          "response": []
+        },
+        {
+          "name": "Analyze Medication Patterns",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/medications/patterns",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications", "patterns"]
+            },
+            "description": "Analyze medication patterns to identify recurring conditions and frequently used medications."
+          },
+          "response": []
+        },
+        {
+          "name": "Check Drug Interactions",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medication\": \"Aspirin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/medications/check-interactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications", "check-interactions"]
+            },
+            "description": "Check for drug interactions with current medications and allergies."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Medication",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false,\n  \"wasEffective\": true,\n  \"notes\": \"Worked well for fever, no side effects\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/medications/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications", ":id"]
+            },
+            "description": "Update medication (mark complete, add effectiveness feedback)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Medication",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/medications/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications", ":id"]
+            },
+            "description": "Delete medication from records."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "9. Prescriptions (NEW)",
+      "item": [
+        {
+          "name": "Create Prescription",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"doctorName\": \"Dr. Rajesh Shah\",\n  \"doctorSpecialty\": \"General Physician\",\n  \"clinicName\": \"Shah Clinic\",\n  \"prescriptionDate\": \"2025-01-15\",\n  \"diagnosis\": \"Viral Fever\",\n  \"symptoms\": [\"fever\", \"headache\", \"body ache\"],\n  \"notes\": \"Rest for 3 days, drink plenty of fluids\",\n  \"followUpDate\": \"2025-01-22\",\n  \"medications\": [\n    {\n      \"medicationName\": \"Paracetamol 500mg\",\n      \"dosage\": \"1 tablet\",\n      \"frequency\": \"3 times daily\",\n      \"duration\": \"5 days\",\n      \"instructions\": \"Take after meals\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions"]
+            },
+            "description": "Create new prescription with medications."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Prescriptions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions?startDate=2025-01-01&doctorName=Shah&diagnosis=Fever",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions"],
+              "query": [
+                {"key": "startDate", "value": "2025-01-01"},
+                {"key": "doctorName", "value": "Shah"},
+                {"key": "diagnosis", "value": "Fever"}
+              ]
+            },
+            "description": "Get all prescriptions with optional filters."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Recent Prescriptions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions/recent?months=3",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions", "recent"],
+              "query": [{"key": "months", "value": "3"}]
+            },
+            "description": "Get prescriptions from last N months (default 3)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Prescription Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions", "stats"]
+            },
+            "description": "Get prescription statistics (total, by doctor, by diagnosis, upcoming follow-ups)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Prescription by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions", ":id"]
+            },
+            "description": "Get specific prescription with all medications."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Prescription",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isFollowUpCompleted\": true,\n  \"notes\": \"Follow-up completed, condition improved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions", ":id"]
+            },
+            "description": "Update prescription details."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Prescription",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions", ":id"]
+            },
+            "description": "Delete prescription (cascade deletes medications)."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
