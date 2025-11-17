@@ -11,6 +11,10 @@ const chatRoutes = require('./routes/chat.routes');
 const userRoutes = require('./routes/user.routes');
 const healthRoutes = require('./routes/health-monitor.routes');
 const notificationRoutes = require('./routes/notification.routes');
+const doctorRoutes = require('./routes/doctor.routes');
+const documentRoutes = require('./routes/document.routes');
+const medicationRoutes = require('./routes/medication.routes');
+const prescriptionRoutes = require('./routes/prescription.routes');
 
 
 const app = express();
@@ -31,6 +35,10 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/health', healthRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/doctors', doctorRoutes);
+app.use('/api/documents', documentRoutes);
+app.use('/api/medications', medicationRoutes);
+app.use('/api/prescriptions', prescriptionRoutes);
 
 
 // Error handling middleware

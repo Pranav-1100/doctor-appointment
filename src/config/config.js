@@ -17,5 +17,6 @@ module.exports = {
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '24h',
   DB_PATH: path.join(__dirname, '../../database.sqlite'),
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:3000'
 };
